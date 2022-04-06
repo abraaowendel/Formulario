@@ -4,7 +4,6 @@ const validator = {
         let send = true;
         const inputs = document.querySelectorAll('input');
         validator.clearErrors();
-
         inputs.forEach((item) =>{
             let check = validator.checkInput(item);
             if(check !== true){
@@ -12,7 +11,6 @@ const validator = {
                 validator.showError(item,check);
             }
         })
-
         if(send){
             form.submit();
         }
@@ -21,7 +19,6 @@ const validator = {
         let rules = input.getAttribute('data-rules'); //PEGA ATRIBUTO DO INPUT
         if(rules != null){ 
             rules = rules.split('|') // SEPARA CONTEUDO DO ATRIBUTO CASO AJA
-
             for(let k in rules){
                 let details = rules[k].split('=') // SEPARA TIPO DA CONDIÇAO E A CONDIÇAO
                 switch(details[0]){
@@ -33,6 +30,14 @@ const validator = {
                     case 'min':
                         if(input.value.length < 8){
                             return 'Senha deve ter mais de 8 caracteres'
+                        }
+                        break
+                    case 'email':
+                        if(input.value != ''){
+                            let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                            if(!regex.test(input.value.toLowerCase())){
+                                return "E-mail não é válido.";
+                            }
                         }
                         break
                 }
@@ -48,10 +53,10 @@ const validator = {
         input.parentElement.insertBefore(errorElement,input.ElementSibling)
     },
     clearErrors: () =>{
+        let inputs = form.querySelectorAll('input');
+        inputs.forEach((inputItem) => inputItem.style.borderColor = '#008000')
         let errorElements = document.querySelectorAll('.error')
-        errorElements.forEach((erroItem) =>{
-            erroItem.remove()
-        })
+        errorElements.forEach((erroItem) => erroItem.remove())
     }
 };
 
